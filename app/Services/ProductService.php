@@ -7,7 +7,9 @@ use stdClass;
 
 class ProductService{
     public function __construct(protected ProductRepositoryInterface $repository)
-    {}
+    {
+        $this->repository = $repository;
+    }
 
     public function getAll():array{
         return $this->repository->getAll();

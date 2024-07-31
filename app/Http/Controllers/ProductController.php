@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductResquest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Services\ProductService;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,6 +12,7 @@ class ProductController extends Controller
 {
     public function __construct(protected ProductService $service)
     {
+        $this->service = $service;
     }
     /**
      * Display a listing of the resource.

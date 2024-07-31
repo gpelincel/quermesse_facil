@@ -12,17 +12,17 @@ class ProductEloquentORM implements ProductRepositoryInterface
 
     public function getAll(): array
     {
-        return $this->model->getAll()->toArray();
+        return $this->model->get()->toArray();
     }
 
-    public function getSingle(string $id_produto): array|stdClass
+    public function getSingle(string $id_produto): stdClass|null
     {
         $produto = $this->model->find($id_produto);
 
-        if ($produto) {
+        if (!$produto) {
             return null;
         }
-        
+
         return (object) $produto->toArray();
     }
 
