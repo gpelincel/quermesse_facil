@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 
 class Produto extends Model
 {
+    use HasFactory;
+    
     //Se a tabela tem um nome diferente do Model, usar a propriedade abaixo
     //protected $table = "tb_produtos";
 
@@ -29,12 +32,12 @@ class Produto extends Model
      */
     // public function boot(): void{}
 
-    public function getAll(){
+    public static function getAll(){
         //A função all() do EloquentORM retorna todos os dados da tabela
         return Produto::all();
     }
 
-    public function getProduto(string $id){
+    public static function getProduto(string $id){
         //A função find() do EloquentORM retorna uma consulta filtrando a pk
         //A função find tem derivadas como 'findOr($id, function callback())' e 'findOrFail' essa lançando uma exception caso não haja retorno 
         return Produto::findOrFail($id);
