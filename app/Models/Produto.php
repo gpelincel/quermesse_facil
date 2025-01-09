@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\ProdutoResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -27,6 +28,13 @@ class Produto extends Model
     //Gerar as colunas de created_at e updated_at
     public $timestamps = false;
 
+    //Array de propriedades que podem ser preenchidas para evitar ataques de mass assingment
+    protected $fillable = [
+        'nome',
+        'preco',
+        'quantidade'
+    ];
+
     /**
      * Configuração de inicio, boot, serviços da aplicação, como o LazyLoading apenas em produção
      */
@@ -43,17 +51,18 @@ class Produto extends Model
         return Produto::findOrFail($id);
     }
 
-    public function store(Request $request){
+    public static function store(Request $request){
 
         //Para salvar um registro no BD basta instanciar, setar os atributos e usar a função save()
         // $produto = new Produto();
         // $produto->nome = $request->nome;
         // $produto->save();
 
-
         //Também é possível usar create
-        $produto = Produto::create([
+        return $produto = Produto::create([
             'nome' => $request->nome,
+            'preco' => $request->preco,
+            'quantidade' => $request->quantidade
         ]);
     }
 }

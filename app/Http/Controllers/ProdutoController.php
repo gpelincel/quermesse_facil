@@ -8,7 +8,15 @@ use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
+    public function index(){
+        return new ProdutoResource(Produto::getAll());
+    }
+
     public function show(string $id){
         return new ProdutoResource(Produto::getProduto($id));
+    }
+
+    public function store(Request $request){
+        return new ProdutoResource(Produto::store($request));
     }
 }
