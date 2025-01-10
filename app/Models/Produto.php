@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 class Produto extends Model
 {
     use HasFactory;
-    
+
     //Se a tabela tem um nome diferente do Model, usar a propriedade abaixo
     //protected $table = "tb_produtos";
 
@@ -40,29 +40,92 @@ class Produto extends Model
      */
     // public function boot(): void{}
 
-    public static function getAll(){
+    private $id;
+    private $nome;
+    private $preco;
+    private $quantidade;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function getNome()
+    {
+        return $this->nome;
+    }
+    public function getPreco()
+    {
+        return $this->preco;
+    }
+
+    public function getQuantidade()
+    {
+        return $this->quantidade;
+    }
+
+    public function setNome(string $nome)
+    {
+        $this->nome = $nome;
+    }
+
+    public function setPreco(float $preco)
+    {
+        $this->preco = $preco;
+    }
+
+    public function setQuantidade(int $quantidade)
+    {
+        $this->quantidade = $quantidade;
+    }
+
+    private static function validateRequest($request){
+        return $request->validate([
+            'nome' => ['required', 'string'],
+            'preco' => ['required', 'numeric', 'min:0'],
+            'quantidade' => ['required', 'numeric', 'min:0']
+        ]);
+    }
+
+    public static function getAll()
+    {
         //A função all() do EloquentORM retorna todos os dados da tabela
         return Produto::all();
     }
 
-    public static function getProduto(string $id){
+    public static function getProduto(string $id)
+    {
         //A função find() do EloquentORM retorna uma consulta filtrando a pk
         //A função find tem derivadas como 'findOr($id, function callback())' e 'findOrFail' essa lançando uma exception caso não haja retorno 
         return Produto::findOrFail($id);
     }
 
-    public static function store(Request $request){
+    public static function store(Request $request)
+    {
 
         //Para salvar um registro no BD basta instanciar, setar os atributos e usar a função save()
         // $produto = new Produto();
         // $produto->nome = $request->nome;
         // $produto->save();
 
+        $request = Produto::validateRequest($request);
+
         //Também é possível usar create
-        return $produto = Produto::create([
-            'nome' => $request->nome,
-            'preco' => $request->preco,
-            'quantidade' => $request->quantidade
+        return Produto::create([
+            'nome' => $request['nome'],
+            'preco' => $request['preco'],
+            'quantidade' => $request['quantidade']
         ]);
+    }
+
+    public static function edit(Request $request, string $id){
+        $produto = Produto::findOrFail($id);
+
+        $request = Produto::validateRequest($request);
+
+        $produto->nome = $request['nome'];
+        $produto->preco = $request['preco'];
+        $produto->quantidade = $request['quantidade'];
+
+        return $produto->save();
     }
 }
