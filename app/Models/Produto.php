@@ -78,13 +78,7 @@ class Produto extends Model
         $this->quantidade = $quantidade;
     }
 
-    private static function validateRequest($request){
-        return $request->validate([
-            'nome' => ['required', 'string'],
-            'preco' => ['required', 'numeric', 'min:0'],
-            'quantidade' => ['required', 'numeric', 'min:0']
-        ]);
-    }
+    
 
     public static function getAll()
     {
@@ -106,8 +100,6 @@ class Produto extends Model
         // $produto = new Produto();
         // $produto->nome = $request->nome;
         // $produto->save();
-
-        $request = Produto::validateRequest($request);
 
         //Também é possível usar create
         return Produto::create([
